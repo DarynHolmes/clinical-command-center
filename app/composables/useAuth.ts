@@ -8,7 +8,6 @@ const user = ref<RecordModel | null>(pb.authStore.record)
 const isAuthorized = computed(() => pb.authStore.isValid && user.value !== null)
 
 // Set up the auth store listener at module level so it's always active
-// This ensures reactivity works even before any component mounts
 pb.authStore.onChange((_, record) => {
   user.value = record
 })
@@ -19,7 +18,8 @@ export function useAuth() {
     try {
       const authData = await pb.collection('users').authWithOAuth2({ provider })
       user.value = authData.record
-      navigateTo('/dashboard')
+      // Full page navigation to ensure fresh module state from localStorage
+      window.location.href = '/dashboard'
     } catch (error) {
       console.error('OAuth2 failed:', error)
       throw error
