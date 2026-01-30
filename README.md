@@ -4,7 +4,7 @@ A real-time clinical trial management dashboard built as a prototype.
 
 ## Live Demo
 
-[https://clinical-command-center.pockethost.io/](https://clinical-command-center.pockethost.io/)
+[https://clinical.pockethost.io/](https://clinical.pockethost.io/)
 
 ### Demo Heartbeat
 

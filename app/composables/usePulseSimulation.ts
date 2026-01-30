@@ -1,7 +1,7 @@
 // Pulse simulation coordinator for demo mode
 // Uses BroadcastChannel for leader election so only one tab sends pulses
 
-import { onMounted, onUnmounted, ref } from 'vue'
+import { getCurrentInstance, onMounted, onUnmounted, ref } from 'vue'
 
 const PULSE_INTERVAL = 10200 // ~10 seconds between pulses
 const LEADER_HEARTBEAT = 5000 // 5 seconds between leader heartbeats
@@ -33,6 +33,10 @@ export function usePulseSimulation() {
   let pulseInterval: ReturnType<typeof setInterval> | null = null
   let heartbeatInterval: ReturnType<typeof setInterval> | null = null
   let leaderCheckInterval: ReturnType<typeof setInterval> | null = null
+
+  // Check if component is already mounted (for when called after initial mount)
+  const instance = getCurrentInstance()
+  const isMounted = instance?.isMounted ?? false
 
   /**
    * Send a pulse to the backend
@@ -163,7 +167,23 @@ export function usePulseSimulation() {
     }
   }
 
-  onMounted(() => {
+  /**
+   * Handle visibility changes - pause when hidden, resume when visible
+   */
+  function handleVisibilityChange() {
+    if (document.hidden && isLeader.value) {
+      // Tab is hidden, resign leadership so other tabs can take over
+      resignLeadership()
+    } else if (!document.hidden) {
+      // Tab is visible again, check if we should become leader
+      setTimeout(checkLeader, 500)
+    }
+  }
+
+  /**
+   * Initialize the pulse simulation (BroadcastChannel, intervals, listeners)
+   */
+  function setup() {
     // Set up BroadcastChannel for cross-tab communication
     try {
       channel = new BroadcastChannel('pulse-simulation')
@@ -180,17 +200,17 @@ export function usePulseSimulation() {
     // Initial leader check after a short delay (allow other tabs to claim leadership)
     setTimeout(checkLeader, Math.random() * 2000 + 1000)
 
-    // Handle visibility changes - pause when hidden, resume when visible
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden && isLeader.value) {
-        // Tab is hidden, resign leadership so other tabs can take over
-        resignLeadership()
-      } else if (!document.hidden) {
-        // Tab is visible again, check if we should become leader
-        setTimeout(checkLeader, 500)
-      }
-    })
-  })
+    // Handle visibility changes
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+  }
+
+  // If component is already mounted (e.g., called after OAuth redirect),
+  // run setup immediately. Otherwise, defer to onMounted.
+  if (isMounted) {
+    setup()
+  } else {
+    onMounted(setup)
+  }
 
   onUnmounted(() => {
     // Clean up
@@ -203,6 +223,8 @@ export function usePulseSimulation() {
     if (channel) {
       channel.close()
     }
+
+    document.removeEventListener('visibilitychange', handleVisibilityChange)
 
     isInitialized = false
   })

@@ -1,23 +1,19 @@
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed } from 'vue'
 import { pb } from '~/services/pocketbase'
 import type { RecordModel } from 'pocketbase'
 
 const user = ref<RecordModel | null>(pb.authStore.record)
-const isAuthorized = computed(() => pb.authStore.isValid)
+
+// Derive isAuthorized from user ref so it's properly reactive
+const isAuthorized = computed(() => pb.authStore.isValid && user.value !== null)
+
+// Set up the auth store listener at module level so it's always active
+// This ensures reactivity works even before any component mounts
+pb.authStore.onChange((_, record) => {
+  user.value = record
+})
 
 export function useAuth() {
-  let unsubscribe: (() => void) | null = null
-
-  onMounted(() => {
-    // Keep user reactive when authStore changes
-    unsubscribe = pb.authStore.onChange((_, record) => {
-      user.value = record
-    })
-  })
-
-  onUnmounted(() => {
-    unsubscribe?.()
-  })
 
   const loginWithOAuth2 = async (provider: 'google' | 'microsoft') => {
     try {
