@@ -74,7 +74,7 @@ This approach maximizes actionable information per screen pixel while maintainin
 ## Future Roadmap
 
 If this were moving to production, the next priorities would be:
-1.  **Audit Logging:** Immutable recording of *who* viewed *which* version of a protocol (21 CFR Part 11 compliance).
+1.  **Audit Logging:** Immutable recording of *who* viewed *which* version of a protocol.
 2.  **Role-Based Access Control (RBAC):** Restricting "Protocol Editing" to Medical Directors only.
 3.  **Offline Support:** Leveraging PWA capabilities for researchers in poor connectivity zones.
 
