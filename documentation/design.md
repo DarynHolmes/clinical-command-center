@@ -57,7 +57,7 @@ export interface Biomarker {
 
 ## 3. Real-Time Subscription Pattern (The "Alive" UI)
 
-To make Luvida feel like a modern AI tool, the UI must react instantly to backend optimizations. Use this pattern in your setup() block:
+To make the app feel like a modern AI tool, the UI must react instantly to backend optimizations. Use this pattern in your setup() block:
 
 ```ts
 import { onMounted, onUnmounted, ref } from 'vue';
@@ -210,7 +210,7 @@ export const useSyncBiomarkers = () => {
   });
 };
 ```
-Why This Matters for Luvida
+Why This Matters
 - Atomic Updates: Instead of refetching the entire list of 500+ biomarkers (which is expensive and slow), you surgically update the exact record that changed.
 - State Consistency: If a researcher in London updates a recruitment target, the researcher in New York sees the UI update instantly without clicking "Refresh."
 - Reduced Server Load: You move from a "Polling" architecture to an "Event-Driven" architecture, which is significantly more scalable as the clinical data scales.
@@ -221,10 +221,9 @@ When dealing with scientific workflows, you'll likely have thousands of data poi
 - Intelligent Invalidation: For complex protocol changes that affect multiple related collections, use queryClient.invalidateQueries({ queryKey: ['protocols'] }) instead of a manual update to ensure all derived data is recalculated.
 - Optimistic UI: When a user edits a protocol, use Vue Query's onMutate to update the cache before the PocketBase request finishes, providing zero-latency feedback.
 
-## The "Interview Edge" (Design Rationale)
-When the hiring manager asks why you structured the data this way, give them this:
 
-Design Rationale: "By implementing a recursive parent_protocol relation and a version_id at the schema level, I’m treating trial amendments as first-class citizens, ensuring researchers can instantly audit how design changes impact biomarker thresholds over the trial's lifecycle."
+## Design Rationale
+By implementing a recursive `parent_protocol` relation and a `version_id` at the schema level, trial amendments are treated as first-class citizens. This ensures researchers can instantly audit how design changes impact biomarker thresholds over the trial's lifecycle.
 
 ## Critical Challenge
-A standard engineer would list all biomarkers in a simple table. For a Founding Engineer, I want you to think about Information Density.
+Information density is key—a simple biomarker table doesn't scale for researchers managing hundreds of data points across multiple protocols.

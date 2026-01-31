@@ -1,6 +1,6 @@
 # Protocol Diff 
 
-In a founding-level role at Luvida, the Protocol Diff isn't just a "compare" tool—it is a critical piece of infrastructure designed to solve the "Protocol Amendment" pain point. Scientific workflows are plagued by subtle changes that have massive downstream regulatory and financial impacts.
+The Protocol Diff isn't just a "compare" tool—it is a critical piece of infrastructure designed to solve the "Protocol Amendment" pain point. Scientific workflows are plagued by subtle changes that have massive downstream regulatory and financial impacts.
 
 ## 1. High-Level Concept: The "Clinical Delta"
 

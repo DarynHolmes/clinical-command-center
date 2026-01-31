@@ -6,6 +6,12 @@ A real-time clinical trial management dashboard built as a prototype.
 
 [https://clinical-center.pockethost.io/](https://clinical-center.pockethost.io/)
 
+### TLDR
+- **OAuth Login** - Sign in with Google
+- **Dashboard** - Real-time biomarker monitoring with sparklines and trend indicators
+- **Amendment Diff** - Click any amendment in the feed to view a side-by-side visual comparison
+- **Live Data** - All data fetched via PocketBase API with WebSocket-powered real-time updates
+
 ### Demo Heartbeat
 
 The live demo includes a **pulse simulation** that periodically updates biomarker values in the background. This mimics real-world data changes (e.g., new lab results arriving) and demonstrates the real-time update capabilities. When values change, you'll see them flash briefly on the dashboard. The simulation uses leader election via BroadcastChannel so only one browser tab triggers updates, even if multiple tabs are open.

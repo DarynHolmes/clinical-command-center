@@ -1,8 +1,4 @@
-## Objective
 
-The ultimate goal of this project is to create a prototype that will be used in a job application at Luvida for a Founding frontend engineer role. 
-
-- https://www.luvida.co.uk/
 
 Use clean code, with good practices. 
 

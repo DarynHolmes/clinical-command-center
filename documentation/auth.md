@@ -76,7 +76,7 @@ watchEffect(() => {
 
 ## The Login UI (Nuxt UI)
 
-Your login page should reflect the Luvida brand—clean, professional, and "Scientific".
+Your login page should reflect the companies brand—clean, professional, and "Scientific".
 
 Use the auth form component - https://ui.nuxt.com/docs/components/auth-form
 
